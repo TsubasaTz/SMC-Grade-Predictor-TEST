@@ -1,61 +1,113 @@
 body {
   background-color: #121212;
-  color: #f9f9f9;
+  color: #ddd;
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 20px;
+  padding: 0;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  background: #222;
+  padding: 1rem;
+  justify-content: center; /* center nav items */
+  margin: 0;
+}
+
+nav ul li a {
+  color: #aaa;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+nav ul li a.active,
+nav ul li a:hover {
+  color: #3168ff;
+  font-weight: bold;
+  background-color: #333;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
 }
 
 .container {
-  max-width: 800px;
-  margin: 0 auto;
   background-color: #1e1e1e;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-h1 {
-  margin-bottom: 30px;
-  color: #ffffff;
-}
-
-.form-group,
-.course-entry {
-  margin-bottom: 20px;
-  text-align: left;
-}
-
-label {
-  display: inline-block;
-  width: 120px;
-  color: #dddddd;
-}
-
-input,
-select {
-  background-color: #2b2b2b;
-  border: 1px solid #444;
-  border-radius: 6px;
-  padding: 8px;
-  color: #f9f9f9;
-  width: 200px;
-}
-
-input::placeholder {
-  color: #888;
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
 }
 
 button {
-  background-color: #3b82f6;
-  color: white;
+  background-color: #3168ff;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  color: black;
+  padding: 0.5rem 1rem;
   cursor: pointer;
+  font-weight: bold;
+  border-radius: 10px; /* rounded rectangle buttons */
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #2563eb;
+  background-color: #254dbf; /* slightly darker on hover */
+}
+
+input, label {
+  color: #ddd;
+  display: block;
+  font-weight: normal;
+}
+
+input {
+  background: #222;
+  border: 1px solid #444;
+  padding: 0.3rem;
+  margin: 0.3rem 0 0.8rem 0;
+  color: white;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+pre {
+  background: #222;
+  padding: 1rem;
+  white-space: pre-wrap;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+img {
+  margin-top: 1rem;
+  max-width: 100%;
+  border-radius: 10px;
+  display: block;
+}
+
+.radio-block {
+  width: 100%;
+  text-align: left;   /* Align content left */
+  margin-bottom: 1rem;
+  padding-left: 1rem; /* Optional: add some left padding inside the container */
+}
+
+.radio-block label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+.radio-block input[type="radio"] {
+  display: block;
+  margin-left: 0;   /* Align radio circle flush left under the label */
 }
