@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>New Student Grade Distribution (Based on Medians)</h2>
+
+<!-- Graph Image -->
+<img src="{{ url_for('static', filename='median_prediction.png') }}" alt="Grade Distribution Graph" style="width: 100%; max-width: 800px; border: 1px solid #555; border-radius: 8px;"/>
+
+<!-- Best Professors -->
+<h3>Best Professors per Course (Highest A Ratio)</h3>
+<ul>
+  {% for course, prof in best_profs.items() %}
+    <li><strong>{{ course }}:</strong> {{ prof }}</li>
+  {% endfor %}
+</ul>
+
+<!-- Back Button -->
+<a href="{{ url_for('prediction') }}">
+  <button>Back to Prediction</button>
+</a>
+{% endblock %}
