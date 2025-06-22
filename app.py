@@ -9,7 +9,7 @@ import base64
 app = Flask(__name__)
 
 # Load and clean data once when app starts
-# testing with sample 
+# testing with sample  
 
 
 df = pd.read_csv('SMC_Data.csv', skipinitialspace=True)
