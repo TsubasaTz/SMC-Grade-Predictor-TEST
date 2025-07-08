@@ -1,4 +1,4 @@
-// static/main.js
+// static/main.js z
 
 document.addEventListener('DOMContentLoaded', () => {
     const addCourseBtn = document.getElementById('add-course-btn');

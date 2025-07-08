@@ -12,11 +12,13 @@
 
   <!-- Initial Course Inputs -->
   <div id="courses-container">
+   <div class ="course-block-wrapper">  <!---- Adding a wrapper  -->
     <div class="course-block">
       <label>Course: <input type="text" name="course_name[]" required></label><br/>
       <label>Professor: <input type="text" name="instructor_name[]" required></label><br/>
       <label>Your grade: <input type="text" name="grade[]" required></label><br/>
     </div>
+   </div>
   </div>
 
   <!-- Add Course Button -->
@@ -33,21 +35,21 @@
   <button>New Student</button>
 </a>
 
-<!-- Display Prediction -->
+<!-- Display Prediction  s-->
 {% if prediction %}
   <h3>Prediction Result:</h3>
   <pre>{{ prediction }}</pre>
 {% endif %}
 
-<!-- Display Graph -->
+<!-- Display Graph.  -->
 {% if plot_img %}
   <img src="data:image/png;base64,{{ plot_img }}" alt="Grade Distribution Chart" />
 {% endif %}
 
-<!-- JavaScript to Dynamically Add More Courses -->
+<!-- JavaScript to Dynamically Add More Courses Test -->
 <script>
   function addCourse() {
-    const container = document.getElementById('courses-container');
+    const wrapper = document.querySelector('#courses-container .course-blocks-wrapper'); 
     const html = `
       <div class="course-block">
         <label>Course: <input type="text" name="course_name[]" required></label><br/>
@@ -55,7 +57,7 @@
         <label>Your grade: <input type="text" name="grade[]" required></label><br/>
       </div>
     `;
-    container.insertAdjacentHTML('beforeend', html);
+    wrapper.insertAdjacentHTML('beforeend', html);
   }
 </script>
 
