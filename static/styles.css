@@ -37,15 +37,48 @@ main {
   padding: 2rem 1rem;
 }
 
-.container {
+/* ------------------------------------------------------------------------------ */
+
+.container { 
   background-color: #1e1e1e;
   border-radius: 20px;
   padding: 2rem;
-  max-width: 800px;
+  max-width: none; /* fixed to use all of the screen width */
   width: 100%;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
   box-sizing: border-box;
 }
+.course-blocks-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  margin-bottom: 1rem; 
+}
+.course-block { /*Add these to make the blcoks side by side together  */
+  flex: 1; 
+  min-width: 280px; 
+  background-color: #2a2a2a;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.course-block input {
+  width: calc(100% - 6px); 
+  box-sizing: border-box; 
+}
+
+.course-block label {
+  margin-bottom: 5px;
+}
+
+.course-block input {
+  margin-bottom: 10px;
+}
+
+/* ------------------------------------------------------------------------------ */
+
 
 button {
   background-color: #3168ff;
