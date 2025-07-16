@@ -1,38 +1,25 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title or "Grade App" }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="{{ url_for('prediction') }}" class="{% if request.path=='/prediction' %}active{% endif %}">SMC Prediction</a></li>
+      <li><a href="{{ url_for('analyzer') }}" class="{% if request.path=='/analyzer' %}active{% endif %}">SMC Grade Analyzer</a></li>
+    </ul>
+  </nav>
 
-{% block content %}
-<div class="tab-content active" id="prediction">
-    <h2>Grade Prediction</h2>
-    <form id="prediction-form">
-        <div class="form-group">
-            <label for="previous-grades">Previous Grades (comma separated):</label>
-            <input type="text" id="previous-grades" name="previous-grades" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="instructor">Instructor:</label>
-            <select id="instructor" name="instructor" required>
-                <option value="">Select Instructor</option>
-                {% for prof in professors %}
-                <option value="{{ prof }}">{{ prof }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="course-level">Course Level:</label>
-            <select id="course-level" name="course-level" required>
-                <option value="">Select Course Level</option>
-                <option value="100">100 Level</option>
-                <option value="200">200 Level</option>
-                <option value="300">300 Level</option>
-                <option value="400">400 Level</option>
-            </select>
-        </div>
-        
-        <button type="submit">Predict Grade</button>
-    </form>
-    
-    <div id="prediction-result" class="result-container"></div>
-</div>
-{% endblock %}
+  <main>
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
