@@ -110,7 +110,7 @@ img {
   /* We will create a custom button, so we need to hide the default one */
   position: absolute;        /* Take it out of the normal flow */
   opacity: 0;                /* Make it completely transparent */
-  pointer-events: none;      /* Prevent it from being clickable, the label will handle it */
+     
 }
 
 /* Style the label to look clickable and contain our custom button */
@@ -132,7 +132,7 @@ img {
   transform: translateY(-50%);
   width: 1.5rem;              /* The size of the button */
   height: 1.5rem;
-  border-radius: 50%;         /* Make it a circle */
+  border-radius: 0;         /* Make it a square */
   background-color: #444;     /* Unselected color */
   border: 2px solid #555;     /* Border for definition */
   transition: all 0.2s ease;  /* Smooth transition for hover/active states */
