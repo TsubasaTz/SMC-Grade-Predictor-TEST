@@ -130,7 +130,7 @@ img {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 1.5rem;              /* The size of the button */
+  width: 1rem;              /* The size of the button */
   height: 1.5rem;
   border-radius: 0;         /* Make it a square */
   background-color: #444;     /* Unselected color */
