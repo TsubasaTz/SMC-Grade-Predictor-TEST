@@ -41,7 +41,7 @@ main {
   background-color: #1e1e1e;
   border-radius: 20px;
   padding: 2rem;
-  max-width: 800px;
+  max-width: 100%;
   width: 100%;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
   box-sizing: border-box;
