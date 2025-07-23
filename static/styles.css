@@ -110,6 +110,7 @@ img {
   /* We will create a custom button, so we need to hide the default one */
   position: absolute;        /* Take it out of the normal flow */
   opacity: 0;                /* Make it completely transparent */
+  pointer-events: none; 
      
 }
 
