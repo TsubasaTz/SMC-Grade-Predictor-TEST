@@ -93,60 +93,60 @@ img {
   border-radius: 10px;
   display: block;
 }
-/* First, let's target the parent container for the radio buttons */
+/* Update this entire block */
+
+
+
+
+
+
+
+
+
+
+/* 1. Change the radio-block to a flex container to put things side-by-side */
 .radio-block {
-  display: flex;             /* Use Flexbox to align items on one line */
-  align-items: center;       /* Vertically center the button and text */
-  margin-bottom: 1rem;       /* Add some space between each option */
+  width: 100%;
+  text-align: left;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  display: flex;             /* This is the key change */
+  align-items: center;       /* Vertically center the text and button */
+  gap: 1rem;                 /* Add space between the square and the text */
 }
 
-/* We need to hide the <br/> tag to force the label and input onto the same line */
+/* 2. Hide the line break from the HTML */
 .radio-block br {
   display: none;
 }
 
-/* Now, style the radio button itself */
-.radio-block input[type="radio"] {
-  /* We will create a custom button, so we need to hide the default one */
-  position: absolute;        /* Take it out of the normal flow */
-  opacity: 0;                /* Make it completely transparent */
-  pointer-events: none; 
-     
-}
 
-/* Style the label to look clickable and contain our custom button */
+/* 3. Style the label to look clickable and contain the custom button */
 .radio-block label {
-  position: relative;         /* Needed for positioning the pseudo-element */
-  padding-left: 2.5rem;       /* Make space for the custom button */
-  cursor: pointer;            /* Indicate it's clickable */
-  font-size: 1.2rem;          /* Make the text bigger */
-  font-weight: bold;          /* Keep the bold weight */
-  color: #ddd;                /* Ensure text color is consistent */
+  /* This will make the label text flexible to take up remaining space */
+  flex-grow: 1;
+  font-weight: bold;
+  font-size: 1.2rem;       /* Make the text bigger, if desired */
+  cursor: pointer;         /* Indicate it's clickable */
+  position: relative;
+  margin-bottom: 0;        /* Remove the old margin since we're using Flexbox now */
+  display: block;          /* Keep the original display type */
 }
 
-/* Create the custom button using the label's ::before pseudo-element */
+/* 4. Hide the original radio button */
+.radio-block input[type="radio"] {
+  display: none;
+}
+
+
+/* 5. Create the custom square button using the label's ::before pseudo-element */
 .radio-block label::before {
-  content: '';                /* Essential for pseudo-elements */
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1rem;              /* The size of the button */
-  height: 1rem;
-  border-radius: 0;         /* Make it a square */
-  background-color: #444;     /* Unselected color */
-  border: 2px solid #555;     /* Border for definition */
-  transition: all 0.2s ease;  /* Smooth transition for hover/active states */
-}
-
-/* Style the active state when the radio button is checked */
-/* The `+` selector targets the sibling `label` right after the checked `input` */
-.radio-block input[type="radio"]:checked + label::before {
-  background-color: #3168ff;  /* Your accent color for the active state */
-  border-color: #3168ff;
-  box-shadow: 0 0 5px rgba(49, 104, 255, 0.6); /* Add a glow */
-}
-
-.radio-block input[type="radio"]:checked + label {
-  color: #fff;                /* Change text color for the active option */
+  content: '';
+  order: -1;                 /* Place the square to the left of the text */
+  width: 1.5rem;             /* The size of the square */
+  height: 1.5rem;
+  border-radius: 0;          /* Make it a perfect square */
+  background-color: #444;    /* Unselected color */
+  border: 2px solid #555;    /* Border for definition */
+  transition: all 0.2s ease; /* Smooth transition for hover/active states */
 }
