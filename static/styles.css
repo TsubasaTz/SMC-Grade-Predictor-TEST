@@ -132,7 +132,7 @@ img {
   top: 50%;
   transform: translateY(-50%);
   width: 1rem;              /* The size of the button */
-  height: 1.5rem;
+  height: 1rem;
   border-radius: 0;         /* Make it a square */
   background-color: #444;     /* Unselected color */
   border: 2px solid #555;     /* Border for definition */
