@@ -93,21 +93,59 @@ img {
   border-radius: 10px;
   display: block;
 }
-
+/* First, let's target the parent container for the radio buttons */
 .radio-block {
-  width: 100%;
-  text-align: left;   /* Align content left */
-  margin-bottom: 1rem;
-  padding-left: 1rem; /* Optional: add some left padding inside the container */
+  display: flex;             /* Use Flexbox to align items on one line */
+  align-items: center;       /* Vertically center the button and text */
+  margin-bottom: 1rem;       /* Add some space between each option */
 }
 
-.radio-block label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 0.3rem;
+/* We need to hide the <br/> tag to force the label and input onto the same line */
+.radio-block br {
+  display: none;
 }
 
+/* Now, style the radio button itself */
 .radio-block input[type="radio"] {
-  display: block;
-  margin-left: 0;   /* Align radio circle flush left under the label */
+  /* We will create a custom button, so we need to hide the default one */
+  position: absolute;        /* Take it out of the normal flow */
+  opacity: 0;                /* Make it completely transparent */
+  pointer-events: none;      /* Prevent it from being clickable, the label will handle it */
+}
+
+/* Style the label to look clickable and contain our custom button */
+.radio-block label {
+  position: relative;         /* Needed for positioning the pseudo-element */
+  padding-left: 2.5rem;       /* Make space for the custom button */
+  cursor: pointer;            /* Indicate it's clickable */
+  font-size: 1.2rem;          /* Make the text bigger */
+  font-weight: bold;          /* Keep the bold weight */
+  color: #ddd;                /* Ensure text color is consistent */
+}
+
+/* Create the custom button using the label's ::before pseudo-element */
+.radio-block label::before {
+  content: '';                /* Essential for pseudo-elements */
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.5rem;              /* The size of the button */
+  height: 1.5rem;
+  border-radius: 50%;         /* Make it a circle */
+  background-color: #444;     /* Unselected color */
+  border: 2px solid #555;     /* Border for definition */
+  transition: all 0.2s ease;  /* Smooth transition for hover/active states */
+}
+
+/* Style the active state when the radio button is checked */
+/* The `+` selector targets the sibling `label` right after the checked `input` */
+.radio-block input[type="radio"]:checked + label::before {
+  background-color: #3168ff;  /* Your accent color for the active state */
+  border-color: #3168ff;
+  box-shadow: 0 0 5px rgba(49, 104, 255, 0.6); /* Add a glow */
+}
+
+.radio-block input[type="radio"]:checked + label {
+  color: #fff;                /* Change text color for the active option */
 }
