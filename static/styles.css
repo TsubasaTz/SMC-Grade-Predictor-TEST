@@ -103,50 +103,67 @@ img {
 
 
 
-
-/* 1. Change the radio-block to a flex container to put things side-by-side */
+/* Update this entire block */
 .radio-block {
   width: 100%;
   text-align: left;
   margin-bottom: 1rem;
   padding-left: 1rem;
-  display: flex;             /* This is the key change */
-  align-items: center;       /* Vertically center the text and button */
-  gap: 1rem;                 /* Add space between the square and the text */
+  
+  /* Use Flexbox to align items on one line */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-/* 2. Hide the line break from the HTML */
 .radio-block br {
   display: none;
 }
 
-
-/* 3. Style the label to look clickable and contain the custom button */
-.radio-block label {
-  /* This will make the label text flexible to take up remaining space */
-  flex-grow: 1;
-  font-weight: bold;
-  font-size: 1.2rem;       /* Make the text bigger, if desired */
-  cursor: pointer;         /* Indicate it's clickable */
-  position: relative;
-  margin-bottom: 0;        /* Remove the old margin since we're using Flexbox now */
-  display: block;          /* Keep the original display type */
-}
-
-/* 4. Hide the original radio button */
 .radio-block input[type="radio"] {
-  display: none;
+  /* This needs to be position absolute so it doesn't take up space */
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
+.radio-block label {
+  /* Set the label to be the primary interactive element */
+  position: relative;
+  cursor: pointer;
+  
+  /* These are the key changes to fix the layout */
+  display: flex;
+  align-items: center;
+  
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #ddd;
+}
 
-/* 5. Create the custom square button using the label's ::before pseudo-element */
 .radio-block label::before {
   content: '';
-  order: -1;                 /* Place the square to the left of the text */
-  width: 1.5rem;             /* The size of the square */
+  
+  /* This is crucial: the ::before element itself needs to be a block */
+  display: inline-block;
+  
+  width: 1.5rem;
   height: 1.5rem;
-  border-radius: 0;          /* Make it a perfect square */
-  background-color: #444;    /* Unselected color */
-  border: 2px solid #555;    /* Border for definition */
-  transition: all 0.2s ease; /* Smooth transition for hover/active states */
+  border-radius: 0;
+  background-color: #444;
+  border: 2px solid #555;
+  margin-right: 1rem; /* Add space between the square and the text */
+  transition: all 0.2s ease;
+}
+
+
+/* Style the active state when the radio button is checked */
+.radio-block input[type="radio"]:checked + label::before {
+  background-color: #3168ff;
+  border-color: #3168ff;
+  box-shadow: 0 0 5px rgba(49, 104, 255, 0.6);
+}
+
+.radio-block input[type="radio"]:checked + label {
+  color: #fff;
 }
