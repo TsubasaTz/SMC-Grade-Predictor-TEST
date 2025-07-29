@@ -168,3 +168,30 @@ img {
 .radio-block input[type="radio"]:checked + label {
   color: #fff;
 }
+
+
+
+
+.professor-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.professor-input-row label {
+  white-space: nowrap;
+  font-weight: bold;
+  color: #ddd;
+}
+
+.professor-input-row input {
+  flex: 1;
+  padding: 0.3rem;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #222;
+  color: white;
+  box-sizing: border-box;
+}
+
