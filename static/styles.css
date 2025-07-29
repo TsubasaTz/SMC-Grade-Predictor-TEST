@@ -173,11 +173,12 @@ img {
 
 
 .professor-input-row {
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 10px;
-  margin-top: 1rem;
+  border: 1px dashed lime; /* DEBUG: remove later */
 }
+
 
 .professor-input-row label {
   white-space: nowrap;
