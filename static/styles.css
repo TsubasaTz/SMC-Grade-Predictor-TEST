@@ -1,3 +1,4 @@
+/* ==== GLOBAL STYLES ==== */
 body {
   background-color: #121212;
   color: #ddd;
@@ -6,13 +7,14 @@ body {
   padding: 0;
 }
 
+/* ==== NAVIGATION BAR ==== */
 nav ul {
   list-style: none;
   display: flex;
   gap: 1rem;
   background: #222;
   padding: 1rem;
-  justify-content: center; /* center nav items */
+  justify-content: center;
   margin: 0;
 }
 
@@ -31,6 +33,7 @@ nav ul li a:hover {
   background-color: #333;
 }
 
+/* ==== MAIN CONTAINER ==== */
 main {
   display: flex;
   justify-content: center;
@@ -47,6 +50,7 @@ main {
   box-sizing: border-box;
 }
 
+/* ==== BUTTONS ==== */
 button {
   background-color: #3168ff;
   border: none;
@@ -54,14 +58,15 @@ button {
   padding: 0.5rem 1rem;
   cursor: pointer;
   font-weight: bold;
-  border-radius: 10px; /* rounded rectangle buttons */
+  border-radius: 10px;
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #254dbf; /* slightly darker on hover */
+  background-color: #254dbf;
 }
 
+/* ==== FORM ELEMENTS ==== */
 input, label {
   color: #ddd;
   display: block;
@@ -79,6 +84,7 @@ input {
   box-sizing: border-box;
 }
 
+/* ==== CODE BLOCKS ==== */
 pre {
   background: #222;
   padding: 1rem;
@@ -87,166 +93,76 @@ pre {
   overflow-x: auto;
 }
 
+/* ==== IMAGES ==== */
 img {
   margin-top: 1rem;
   max-width: 100%;
   border-radius: 10px;
   display: block;
 }
-/* Update this entire block */
 
-
-
-
-body {
-  background-color: #121212;
-  color: #ddd;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-nav ul {
-  list-style: none;
+/* ==== COURSE INPUT LAYOUT (SIDE BY SIDE) ==== */
+#courses-container {
   display: flex;
-  gap: 1rem;
-  background: #222;
-  padding: 1rem;
-  justify-content: center; /* center nav items */
-  margin: 0;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
 }
 
-nav ul li a {
-  color: #aaa;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  transition: background-color 0.3s ease;
-}
-
-nav ul li a.active,
-nav ul li a:hover {
-  color: #3168ff;
-  font-weight: bold;
-  background-color: #333;
-}
-
-main {
-  display: flex;
-  justify-content: center;
-  padding: 2rem 1rem;
-}
-
-.container {
+.course-block {
+  border: 1px solid #ccc;
+  padding: 10px;
   background-color: #1e1e1e;
-  border-radius: 20px;
-  padding: 2rem;
-  max-width: 100%;
-  width: 100%;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-  box-sizing: border-box;
-}
-
-button {
-  background-color: #3168ff;
-  border: none;
-  color: black;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 10px; /* rounded rectangle buttons */
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #254dbf; /* slightly darker on hover */
-}
-
-input, label {
-  color: #ddd;
-  display: block;
-  font-weight: normal;
-}
-
-input {
-  background: #222;
-  border: 1px solid #444;
-  padding: 0.3rem;
-  margin: 0.3rem 0 0.8rem 0;
-  color: white;
-  border-radius: 6px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-pre {
-  background: #222;
-  padding: 1rem;
-  white-space: pre-wrap;
+  min-width: 220px;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
   border-radius: 10px;
-  overflow-x: auto;
 }
 
-img {
-  margin-top: 1rem;
-  max-width: 100%;
-  border-radius: 10px;
-  display: block;
-}
-/* First, let's target the parent container for the radio buttons */
+/* ==== CUSTOM RADIO BUTTONS ==== */
 .radio-block {
-  display: flex;             /* Use Flexbox to align items on one line */
-  align-items: center;       /* Vertically center the button and text */
-  margin-bottom: 1rem;       /* Add some space between each option */
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-/* We need to hide the <br/> tag to force the label and input onto the same line */
 .radio-block br {
   display: none;
 }
 
-/* Now, style the radio button itself */
 .radio-block input[type="radio"] {
-  /* We will create a custom button, so we need to hide the default one */
-  position: absolute;        /* Take it out of the normal flow */
-  opacity: 0;                /* Make it completely transparent */
-     
+  position: absolute;
+  opacity: 0;
 }
 
-/* Style the label to look clickable and contain our custom button */
 .radio-block label {
-  position: relative;         /* Needed for positioning the pseudo-element */
-  padding-left: 2.5rem;       /* Make space for the custom button */
-  cursor: pointer;            /* Indicate it's clickable */
-  font-size: 1.2rem;          /* Make the text bigger */
-  font-weight: bold;          /* Keep the bold weight */
-  color: #ddd;                /* Ensure text color is consistent */
+  position: relative;
+  padding-left: 2.5rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ddd;
 }
 
-/* Create the custom button using the label's ::before pseudo-element */
 .radio-block label::before {
-  content: '';                /* Essential for pseudo-elements */
+  content: '';
   position: absolute;
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 1rem;              /* The size of the button */
+  width: 1rem;
   height: 1.5rem;
-  border-radius: 0;         /* Make it a square */
-  background-color: #444;     /* Unselected color */
-  border: 2px solid #555;     /* Border for definition */
-  transition: all 0.2s ease;  /* Smooth transition for hover/active states */
+  border-radius: 0;
+  background-color: #444;
+  border: 2px solid #555;
+  transition: all 0.2s ease;
 }
 
-/* Style the active state when the radio button is checked */
-/* The `+` selector targets the sibling `label` right after the checked `input` */
 .radio-block input[type="radio"]:checked + label::before {
-  background-color: #3168ff;  /* Your accent color for the active state */
+  background-color: #3168ff;
   border-color: #3168ff;
-  box-shadow: 0 0 5px rgba(49, 104, 255, 0.6); /* Add a glow */
+  box-shadow: 0 0 5px rgba(49, 104, 255, 0.6);
 }
 
 .radio-block input[type="radio"]:checked + label {
-  color: #fff;                /* Change text color for the active option */
+  color: #fff;
 }
-
