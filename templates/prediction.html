@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
+
+ <!--      extending blocks^^   -->
+
 <h1>Grade Prediction</h1>
 
+
 <form method="POST" action="/predict">
+
+  
   <!-- Department Dropdown -->
   <label for="department">Department:</label>
   <select name="department" id="department">
