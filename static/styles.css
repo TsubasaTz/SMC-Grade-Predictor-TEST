@@ -153,7 +153,7 @@ img {
   transform: translateY(-50%);
   width: 1rem;
   height: 1.5rem;
-  border-radius: 50%;              /*line changed */
+  border-radius: 100%;              /*line changed */
   background-color: #444;
   border: 2px solid #555;
   transition: all 0.2s ease;
