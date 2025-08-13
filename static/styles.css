@@ -168,11 +168,16 @@ img {
 .radio-block input[type="radio"]:checked + label {
   color: #fff;
 }
+/* ==== Prof name  ==== */
+
+
+
+
 
 .professor-input-container {
   display: flex;
-  align-items: center;
-  gap: 8px; /* space between label and input */
+  align-items: right;
+  gap: 10px; 
 }
 
 .professor-selection {
@@ -190,5 +195,8 @@ img {
   padding: 4px 8px;
   font-size: 14px;
   min-width: 180px; 
+
+  /* ==== Prof name  ==== */
+
 
 
