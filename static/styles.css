@@ -169,6 +169,11 @@ img {
   color: #fff;
 }
 
+.professor-input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* space between label and input */
+}
 
 .professor-selection {
   display: flex;
@@ -185,4 +190,5 @@ img {
   padding: 4px 8px;
   font-size: 14px;
   min-width: 180px; 
+
 
