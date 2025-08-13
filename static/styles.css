@@ -170,64 +170,18 @@ img {
 }
 
 
-/*  
-
-.professor-input-row {
-  display: flex !important;
+.professor-selection {
+  display: flex;
   align-items: center;
-  gap: 10px;
- 
+  gap: 12px;
+  flex-wrap: wrap; /* so it can wrap on smaller screens */
 }
 
-
-.professor-input-row label {
-  white-space: nowrap;
-  font-weight: bold;
-  color: #ddd;
+.professor-input-container label {
+  margin-right: 8px;
 }
 
-.professor-input-row input {
-  flex: 1;
-  padding: 0.3rem;
-  border-radius: 6px;
-  border: 1px solid #444;
-  background: #222;
-  color: white;
-  box-sizing: border-box;
-}
-/* ==== Professor input text box ==== */
-
-
-
-professor-input-row {
-            display: none !important;
-            align-items: center;
-            gap: 10px;
-            margin-left: 1rem;
-        }
-
-        .professor-input-row.show {
-            display: flex !important;
-        }
-
-        .professor-input-row label {
-            white-space: nowrap;
-            font-weight: bold;
-            color: #ddd;
-        }
-
-        .professor-input-row input {
-            flex: 1;
-            max-width: 150px;
-            padding: 0.3rem;
-            border-radius: 6px;
-            border: 1px solid #444;
-            background: #222;
-            color: white;
-            box-sizing: border-box;
-        }
-
-        .professor-input-row input:focus {
-            border-color: #3168ff;
-
-
+.professor-input-container input {
+  padding: 4px 8px;
+  font-size: 14px;
+  min-width: 180px; 
