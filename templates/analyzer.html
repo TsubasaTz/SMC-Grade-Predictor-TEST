@@ -2,45 +2,40 @@
 {% block content %}
 <h1>Grade Analyzer</h1>
 <form method="POST">
-  <p>Select analysis option:</p>
-
-  <div class="radio-block">
-    <input type="radio" id="option1" name="option" value="1">
-    <label for="option1">Professor Summary</label>
-  </div>
-
-  <div class="radio-block">
-    <input type="radio" id="option2" name="option" value="2">
-    <label for="option2">Average by Course</label>
-  </div>
-
-  <div class="radio-block">
-    <input type="radio" id="option3" name="option" value="3">
-    <label for="option3">Overall Data</label>
-  </div>
-
-  <div class="radio-block">
-    <input type="radio" id="option4" name="option" value="4">
-    <label for="option4">Best/Worst A Ratio</label>
-  </div>
-<!--- hi --->
- <div class="radio-block professor-summary-with-input">
-  <input type="radio" id="option1" name="option" value="1">
-  <label for="option1">Professor Summary</label>
-  
-  <label for="prof_name" style="margin-left: 1rem;">Professor name:</label>
-  <input type="text" id="prof_name" name="prof_name" style="width: 200px;" />
-</div>
-
-  <br/>
-  <button type="submit">Analyze</button>
+    <p>Select analysis option:</p>
+    
+   
+    <div class="professor-input-container" id="professorInput">
+        <label for="prof_name">Professor name:</label>
+        <input type="text" id="prof_name" name="prof_name" placeholder="Enter professor name">
+    </div>
+    
+    <div class="radio-block">
+        <input type="radio" id="option2" name="option" value="2">
+        <label for="option2">Average by Course</label>
+    </div>
+    
+    <div class="radio-block">
+        <input type="radio" id="option3" name="option" value="3">
+        <label for="option3">Overall Data</label>
+    </div>
+    
+    <div class="radio-block">
+        <input type="radio" id="option4" name="option" value="4">
+        <label for="option4">Best/Worst A Ratio</label>
+    </div>
+    
+    <button type="submit">Analyze</button>
 </form>
 
 {% if analysis %}
-  <pre>{{ analysis }}</pre>
+    <pre>{{ analysis }}</pre>
 {% endif %}
 {% if plot_img %}
-  <img src="data:image/png;base64,{{ plot_img }}" alt="Analysis Chart" />
+    <img src="data:image/png;base64,{{ plot_img }}" alt="Analysis Chart" />
 {% endif %}
-{% endblock %}
 
+<script>
+    // Add the JavaScript from the artifact here
+</script>
+{% endblock %}
