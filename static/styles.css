@@ -174,14 +174,15 @@ img {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-wrap: wrap; /* so it can wrap on smaller screens */
+  flex-wrap: wrap; 
 }
 
 .professor-input-container label {
-  margin-right: 8px;
+  margin-right: 10px;
 }
 
 .professor-input-container input {
   padding: 4px 8px;
   font-size: 14px;
   min-width: 180px; 
+
