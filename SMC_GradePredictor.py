@@ -28,7 +28,8 @@ while True:
     print("3. Overall Data")
     print("4. Best/Worst A Ratio (Professor)")
     print("5. Full A Ratio Ranking")
-    print("6. Exit")
+    print("6. 2025 FALL COURESES")
+    print("7. Exit")
     choice = input("Select option (1-6): ")
 
     if choice == "1":
@@ -170,9 +171,37 @@ while True:
         plt.tight_layout()
         plt.show()
 
-
-
+    
     elif choice == "6":
+        class_name = input("Enter the class Name you are going to take (e.g., Math 2): ").replace(" ", "").upper()
+        # Load course info
+        course_df = pd.read_csv("SMC_Math_Course(Sheet1).csv")
+        # Normalize course names for matching
+        course_df["Course Name Norm"] = course_df["Course Name"].str.replace(" ", "").str.upper()
+        # Filter by class name
+        matches = course_df[course_df["Course Name Norm"] == class_name]
+        if matches.empty:
+            print("No matching classes found.")
+        else:
+    
+            print(f"\nSections for {class_name}:")
+            for idx, row in matches.iterrows():
+                # Get professor last name (title case for matching)
+                prof_last = str(row['Instructor']).strip().split()[0].title()
+                # Calculate A Ratio from df
+                prof_data = df[df["Professor"] == prof_last]
+                total = prof_data[["A", "B", "C", "D", "F", "W"]].sum().sum()
+                a_count = prof_data["A"].sum()
+                a_ratio = (a_count / total * 100) if total else 0
+                print(f"Section: {row['Section']}, Title: {row['Course Title']}, Schedule: {row['Schedule']}, "
+                      f"Modality: {row['Section Modality']}, Campus: {row['Campus']}, "
+                      f"Location: {row['Location']}, Instructor: {row['Instructor']}, "
+                      f"A Ratio: {a_ratio:.2f}%")
+    
+
+# ...existing code...
+        
+    elif choice == "7":
         print("Exiting.")
         break
 
