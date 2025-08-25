@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1>SMC Grade Analyzer</h1>
+  <p>>Enter the math course code you want to analyze (e.g. <strong>MATH2</strong>).</p>
+
+  <div class="search-form">
+    <input type="text" id="courseInput" placeholder="예: MATH2" />
+    <button id="searchBtn">Search</button>
+  </div>
+
+  <table id="resultsTable" class="results-table" style="display: none;">
+    <thead>
+      <tr>
+        <th>Course</th>
+        <th>Course Title</th>
+        <th>Section</th>
+        <th>Instructor</th>
+        <th>Schedule</th>
+        <th>Location</th>
+        <th>Campus</th>
+        <th>A Rate (%)</th>
+      </tr>
+    </thead>
+    <tbody id="resultsBody"></tbody>
+  </table>
+
+  <script>
+    document.getElementById('searchBtn').addEventListener('click', searchCourse);
+    document.getElementById('courseInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') searchCourse();
+    });
+
+    
+    function computeARate(row) {
+      const num = k => Number(row[k]) || 0;
+      const A = num('A'), B = num('B'), C = num('C'), D = num('D'), F = num('F');
+      const denom = A + B + C + D + F;
+      if (denom <= 0) return null;
+      return (A / denom * 100).toFixed(2);
+    }
+
+    function searchCourse() {
+      const course = document.getElementById('courseInput').value.trim().toUpperCase();
+      if (!course) {
+        alert('Please enter a course name.');
+        return;
+      }
+
+      fetch(`{{ url_for('search_course') }}?course=${encodeURIComponent(course)}`)
+        .then(response => response.json())
+        .then(data => {
+          const table = document.getElementById('resultsTable');
+          const body = document.getElementById('resultsBody');
+          body.innerHTML = '';
+
+          if (!Array.isArray(data) || data.length === 0) {
+            table.style.display = 'none';
+            alert('No course information found.');
+            return;
+          }
+
+          table.style.display = 'table';
+          data.forEach(row => {
+            const aRate = computeARate(row);
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${row['Course Name']}</td>
+              <td>${row['Course Title']}</td>
+              <td>${row['Section']}</td>
+              <td>${row['Instructor']}</td>
+              <td>${row['Schedule']}</td>
+              <td>${row['Location']}</td>
+              <td>${row['Campus']}</td>
+              <td>${aRate !== null ? aRate : 'N/A'}</td>
+            `;
+            body.appendChild(tr);
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          alert('Error fetching course data.');
+        });
+    }
+  </script>
+{% endblock %}
