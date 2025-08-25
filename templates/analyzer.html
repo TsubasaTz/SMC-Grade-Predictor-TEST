@@ -20,19 +20,18 @@
 
 
  <label for="choice">Select option (1-7): :</label>
-  <input type="number" id="choice" name="choice" min="1" max="6" required />
+  <input type="number" id="choice" name="choice" min="1" max="7" required />
   
   <button type="submit">Submit</button>
 
 
 </form>
 
-{% if analysis %}
-    <pre>{{ analysis }}</pre>
-{% endif %}
-{% if plot_img %}
-    <img src="data:image/png;base64,{{ plot_img }}" alt="Analysis Chart" />
-{% endif %}
+{% if analysis %} <pre>{{ analysis }}</pre>
+{% endif %} {% if plot_img %} 
+<img src="data:image/png;base64,{{ plot_img }}" alt="Analysis Chart" /> {% endif %} <script> 
+    // Add the JavaScript from the artifact here </script> {% endblock %}
+
 
 
 
