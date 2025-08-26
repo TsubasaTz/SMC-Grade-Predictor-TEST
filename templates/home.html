@@ -1,1 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="hero">
+    <h1>Welcome to the SMC Grade App 🎓</h1>
+    <p>
+      This web app helps Santa Monica College students explore past grade distributions, 
+      analyze professor trends, and make informed choices about classes. 
+    </p>
+    <a href="{{ url_for('analyzer') }}" class="btn">Start Analyzing Grades</a>
+    <a href="{{ url_for('prediction') }}" class="btn secondary">Try Prediction Tool</a>
+  </section>
+
+  <section class="features">
+    <h2>What You Can Do</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>📊 Grade Analyzer</h3>
+        <p>See grade distributions by professor, course, or overall trends.</p>
+        <a href="{{ url_for('analyzer') }}" class="link">Explore →</a>
+      </div>
+      <div class="feature-card">
+        <h3>🤖 Prediction Tool</h3>
+        <p>Enter your details and get predictions based on historical data.</p>
+        <a href="{{ url_for('prediction') }}" class="link">Try It →</a>
+      </div>
+      <div class="feature-card">
+        <h3>📅 Fall 2025 Courses</h3>
+        <p>Check upcoming classes with grade history insights.</p>
+        <a href="{{ url_for('analyzer') }}#fall2025" class="link">View Courses →</a>
+      </div>
+    </div>
+  </section>
+{% endblock %}
 
