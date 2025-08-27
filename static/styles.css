@@ -38,7 +38,6 @@ nav ul li a:hover {
   height: 180px;           /* Adjust size */
   width: 180px;            /* Keep aspect ratio */
   margin-right: 20px;     /* Space between logo and menu */
-  border-radius: 8px;     /* Rounded corners (optional) */
   
   display: block;         /* Ensures proper alignment */
   vertical-align: middle; /* Aligns with text if needed */
@@ -131,6 +130,11 @@ img {
   box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
   border-radius: 10px;
   
+}
+
+
+.footer {
+  margin-bottom: 2px;
 }
 
 
