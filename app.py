@@ -259,5 +259,33 @@ def analyzer():
 
     return render_template('analyzer.html', analysis=analysis_result, plot_img=img)
 
+@app.route("/fall_classes", methods=["GET", "POST"])
+def fall_classes():
+    results = []
+    class_name = ""
+    if request.method == "POST":
+        class_name = request.form.get("class_name", "").replace(" ", "").upper()
+        course_df = pd.read_csv("SMC_Math_Course(Sheet1).csv")
+        course_df["Course Name Norm"] = course_df["Course Name"].str.replace(" ", "").str.upper()
+        matches = course_df[course_df["Course Name Norm"] == class_name]
+        for idx, row in matches.iterrows():
+            prof_last = str(row['Instructor']).strip().split()[0].title()
+            prof_data = df[df["Professor"] == prof_last]
+            total = prof_data[["A", "B", "C", "D", "F", "W"]].sum().sum()
+            a_count = prof_data["A"].sum()
+            a_ratio = round((a_count / total * 100), 2) if total else 0
+            results.append({
+                "section": row['Section'],
+                "title": row['Course Title'],
+                "schedule": row['Schedule'],
+                "modality": row['Section Modality'],
+                "campus": row['Campus'],
+                "location": row['Location'],
+                "instructor": row['Instructor'],
+                "a_ratio": a_ratio
+            })
+    return render_template("fall_classes.html", results=results, class_name=class_name)
+
 if __name__ == '__main__':
     app.run(debug=True)
+
