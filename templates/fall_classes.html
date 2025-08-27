@@ -2,7 +2,7 @@
 {% block content %}
   <h2>Fall 2025 Classes Search</h2>
   <form method="post" class="search-form" style="margin-bottom:20px;">
-    <input type="text" name="class_name" id="courseInput" placeholder="예: MATH2" value="{{ class_name }}">
+    <input type="text" name="class_name" id="courseInput" placeholder="ex: MATH2" value="{{ class_name }}">
     <button type="submit" id="searchBtn">Search</button>
   </form>
   <hr>
@@ -18,7 +18,7 @@
             <th>Campus</th>
             <th>Location</th>
             <th>Instructor</th>
-            <th>A Ratio (%)</th>
+            <th id="aRatioHeader" style="cursor:pointer;">A Ratio (%) ▲▼</th>
           </tr>
         </thead>
         <tbody id="resultsBody">
@@ -36,11 +36,34 @@
           {% endfor %}
         </tbody>
       </table>
+      <script>
+        // JS로 테이블 정렬 기능 추가
+        let sortAsc = true;
+        document.getElementById('aRatioHeader').addEventListener('click', function() {
+          const table = document.getElementById('resultsTable');
+          const tbody = document.getElementById('resultsBody');
+          // rows to array
+          const rows = Array.from(tbody.querySelectorAll('tr'));
+          rows.sort((a, b) => {
+            // 마지막 td가 a_ratio
+            const arA = parseFloat(a.children[7].textContent) || 0;
+            const arB = parseFloat(b.children[7].textContent) || 0;
+            return sortAsc ? arB - arA : arA - arB;
+          });
+          // tbody 갱신
+          rows.forEach(row => tbody.appendChild(row));
+          sortAsc = !sortAsc;
+        });
+      </script>
     {% elif class_name %}
       <p>No matching classes found.</p>
     {% endif %}
   </div>
   <style>
+    body {
+      background: #f8faff;
+      color: #222;
+    }
     .search-form {
       display: flex;
       gap: 10px;
@@ -53,6 +76,8 @@
       border: 1px solid #ccc;
       border-radius: 4px;
       width: 220px;
+      background: #fff;
+      color: #222;
     }
     #searchBtn {
       padding: 6px 20px;
@@ -67,6 +92,8 @@
       margin-top: 20px;
       border: 1px solid #ddd;
       width: 100%;
+      background: #fff;
+      color: #222;
     }
     #resultsTable th, #resultsTable td {
       padding: 8px 12px;
@@ -74,11 +101,18 @@
       text-align: center;
     }
     #resultsTable th {
-      background: #f8faff;
+      background: #2b7bff;
+      color: #fff;
       font-weight: bold;
     }
     #resultsTable tr:nth-child(even) {
       background: #f5f7fa;
+    }
+    #resultsTable tr:nth-child(odd) {
+      background: #ffffff;
+    }
+    #aRatioHeader {
+      text-decoration: underline;
     }
   </style>
 {% endblock %}
