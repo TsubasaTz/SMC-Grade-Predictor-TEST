@@ -17,6 +17,7 @@
     <ul>
       <li><a href="{{ url_for('prediction') }}" class="{% if request.path=='/prediction' %}active{% endif %}">SMC Prediction</a></li>
       <li><a href="{{ url_for('analyzer') }}" class="{% if request.path=='/analyzer' %}active{% endif %}">SMC Grade Analyzer</a></li>
+       <li><a href="{{ url_for('analyzer') }}" class="{% if request.path=='/analyzer' %}active{% endif %}">Fall 2025 classes</a></li>
     </ul>
   </nav>
 
@@ -30,5 +31,6 @@
   <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 </html>
+
 
 
