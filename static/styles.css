@@ -33,6 +33,19 @@ nav ul li a:hover {
   background-color: #333;
 }
 
+/* Only affects the logo */
+.nav-logo {
+  height: 50px;           /* Adjust size */
+  width: auto;            /* Keep aspect ratio */
+  margin-right: 20px;     /* Space between logo and menu */
+  border-radius: 8px;     /* Rounded corners (optional) */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* subtle shadow (optional) */
+  display: block;         /* Ensures proper alignment */
+  vertical-align: middle; /* Aligns with text if needed */
+}
+
+
+
 /* ==== MAIN CONTAINER ==== */
 main {
   display: flex;
@@ -119,6 +132,7 @@ img {
   border-radius: 10px;
   
 }
+
 
 
 
