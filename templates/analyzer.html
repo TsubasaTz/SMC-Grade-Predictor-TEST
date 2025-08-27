@@ -21,8 +21,7 @@
 
  <label for="option">Select option (1-7): :</label>
   <input type="number" id="option" name="option" min="1" max="7" required />
-  
-  <button type="submit">Submit</button>
+
 
 
 
@@ -30,7 +29,7 @@
 
 
     
- <!-- Extra fields only show for options 1 and 6 -->
+ <!-- Extra fields  for options 1 and 6 -->
   <div id="extra-fields" style="margin-top:1em;">
     <div id="prof-field" style="display:none;">
       <label for="prof_name">Professor Last Name:</label>
@@ -81,6 +80,7 @@
 {% endif %} {% if plot_img %} 
 <img src="data:image/png;base64,{{ plot_img }}" alt="Analysis Chart" /> {% endif %} <script> 
     // Add the JavaScript from the artifact here test </script> {% endblock %}s -->
+
 
 
 
