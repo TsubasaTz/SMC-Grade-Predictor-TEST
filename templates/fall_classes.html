@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>2025 FALL CLASSES Search</title>
+</head>
+<body>
+    <h2>2025 FALL CLASSES Search</h2>
+    <form method="post">
+        Class Name: <input name="class_name" placeholder="e.g. Math 2" value="{{ class_name }}">
+        <input type="submit" value="Search">
+    </form>
+    <div>
+        {% if results %}
+            <table border="1">
+                <tr>
+                    <th>Section</th><th>Title</th><th>Schedule</th><th>Modality</th>
+                    <th>Campus</th><th>Location</th><th>Instructor</th><th>A Ratio</th>
+                </tr>
+                {% for row in results %}
+                <tr>
+                    <td>{{ row.section }}</td>
+                    <td>{{ row.title }}</td>
+                    <td>{{ row.schedule }}</td>
+                    <td>{{ row.modality }}</td>
+                    <td>{{ row.campus }}</td>
+                    <td>{{ row.location }}</td>
+                    <td>{{ row.instructor }}</td>
+                    <td>{{ row.a_ratio }}%</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% elif class_name %}
+            <p>No matching classes found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
