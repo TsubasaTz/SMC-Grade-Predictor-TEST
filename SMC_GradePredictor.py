@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 
-# Load and clean data
+# Load and clean data ty
 df = pd.read_csv("SMC_Data.csv")
 
 grade_cols = ["A", "B", "C", "D", "F", "P", "NP", "IX", "EW", "W"]
@@ -207,3 +207,4 @@ while True:
 
     else:
         print("Invalid choice.")
+
