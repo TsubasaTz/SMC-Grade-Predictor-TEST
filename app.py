@@ -257,6 +257,28 @@ def analyzer():
                         f"{ratio:.1f}%", ha='center', va='top', color='white', fontsize=9)
             img = plot_to_img(fig)
 
+        elif option == '6':
+            course_df = pd.read_csv("SMC_Math_Course(Sheet1).csv")
+            course_df["Course Name Norm"] = course_df["Course Name"].str.replace(" ", "").str.upper()
+            matches = course_df[course_df["Course Name Norm"] == class_name]
+            if matches.empty:
+                analysis_result = "No matching classes found."
+            else:
+                result_rows = []
+                for idx, row in matches.iterrows():
+                    prof_last = str(row['Instructor']).strip().split()[0].title()
+                    prof_data = df[df["Professor"] == prof_last]
+                    total = prof_data[["A", "B", "C", "D", "F", "W"]].sum().sum()
+                    a_count = prof_data["A"].sum()
+                    a_ratio = (a_count / total * 100) if total else 0
+                    result_rows.append(
+                        f"Section: {row['Section']}, Title: {row['Course Title']}, Schedule: {row['Schedule']}, "
+                        f"Modality: {row['Section Modality']}, Campus: {row['Campus']}, "
+                        f"Location: {row['Location']}, Instructor: {row['Instructor']}, "
+                        f"A Ratio: {a_ratio:.2f}%"
+                    )
+                analysis_result = f"\nSections for {class_name}:\n" + "\n".join(result_rows)
+
     return render_template('analyzer.html', analysis=analysis_result, plot_img=img)
 
 @app.route("/fall_classes", methods=["GET", "POST"])
@@ -288,4 +310,5 @@ def fall_classes():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
