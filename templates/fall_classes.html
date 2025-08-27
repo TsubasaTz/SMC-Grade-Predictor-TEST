@@ -1,63 +1,73 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h2>Fall 2025 Classes Search</h2>
-  <form method="post" class="search-form" style="margin-bottom:20px;">
-    <input type="text" name="class_name" id="courseInput" placeholder="ex: MATH2" value="{{ class_name }}">
-    <button type="submit" id="searchBtn">Search</button>
-  </form>
-  <hr>
-  <div>
-    {% if results %}
-      <table id="resultsTable" class="results-table" style="width:100%; border-collapse:collapse;">
-        <thead>
-          <tr>
-            <th>Section</th>
-            <th>Title</th>
-            <th>Schedule</th>
-            <th>Modality</th>
-            <th>Campus</th>
-            <th>Location</th>
-            <th>Instructor</th>
-            <th id="aRatioHeader" style="cursor:pointer;">A Ratio (%) ▲▼</th>
-          </tr>
-        </thead>
-        <tbody id="resultsBody">
-          {% for row in results %}
-          <tr>
-            <td>{{ row.section }}</td>
-            <td>{{ row.title }}</td>
-            <td>{{ row.schedule }}</td>
-            <td>{{ row.modality }}</td>
-            <td>{{ row.campus }}</td>
-            <td>{{ row.location }}</td>
-            <td>{{ row.instructor }}</td>
-            <td>{{ row.a_ratio }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <script>
-        let sortAsc = true;
-        document.getElementById('aRatioHeader').addEventListener('click', function() {
-          const tbody = document.getElementById('resultsBody');
-          const rows = Array.from(tbody.querySelectorAll('tr'));
-          rows.sort((a, b) => {
-            const arA = parseFloat(a.children[7].textContent) || 0;
-            const arB = parseFloat(b.children[7].textContent) || 0;
-            return sortAsc ? arB - arA : arA - arB;
+  <div class="dark-card">
+    <h2 style="color:#f1f1f1;">Fall 2025 Classes Search</h2>
+    <form method="post" class="search-form" style="margin-bottom:20px;">
+      <input type="text" name="class_name" id="courseInput" placeholder="ex: MATH2" value="{{ class_name }}">
+      <button type="submit" id="searchBtn">Search</button>
+    </form>
+    <hr style="border-color:#444;">
+    <div>
+      {% if results %}
+        <table id="resultsTable" class="results-table">
+          <thead>
+            <tr>
+              <th>Section</th>
+              <th>Title</th>
+              <th>Schedule</th>
+              <th>Modality</th>
+              <th>Campus</th>
+              <th>Location</th>
+              <th>Instructor</th>
+              <th id="aRatioHeader" style="cursor:pointer;">A Ratio (%) ▲▼</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody">
+            {% for row in results %}
+            <tr>
+              <td>{{ row.section }}</td>
+              <td>{{ row.title }}</td>
+              <td>{{ row.schedule }}</td>
+              <td>{{ row.modality }}</td>
+              <td>{{ row.campus }}</td>
+              <td>{{ row.location }}</td>
+              <td>{{ row.instructor }}</td>
+              <td>{{ row.a_ratio }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <script>
+          let sortAsc = true;
+          document.getElementById('aRatioHeader').addEventListener('click', function() {
+            const tbody = document.getElementById('resultsBody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            rows.sort((a, b) => {
+              const arA = parseFloat(a.children[7].textContent) || 0;
+              const arB = parseFloat(b.children[7].textContent) || 0;
+              return sortAsc ? arB - arA : arA - arB;
+            });
+            rows.forEach(row => tbody.appendChild(row));
+            sortAsc = !sortAsc;
           });
-          rows.forEach(row => tbody.appendChild(row));
-          sortAsc = !sortAsc;
-        });
-      </script>
-    {% elif class_name %}
-      <p>No matching classes found.</p>
-    {% endif %}
+        </script>
+      {% elif class_name %}
+        <p style="color:#f1f1f1;">No matching classes found.</p>
+      {% endif %}
+    </div>
   </div>
   <style>
     body {
-      background: #f8faff;
-      color: #222;
+      background: #181818; /* analyzer.html 다크 배경 */
+      color: #f1f1f1;
+    }
+    .dark-card {
+      background: #222;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(20,20,20,0.32);
+      padding: 32px 28px;
+      max-width: 900px;
+      margin: 38px auto 38px auto;
     }
     .search-form {
       display: flex;
@@ -68,16 +78,16 @@
     #courseInput {
       padding: 6px 10px;
       font-size: 1rem;
-      border: 1px solid #ccc;
+      border: 1px solid #333;
       border-radius: 4px;
       width: 220px;
-      background: #fff;
-      color: #222;
+      background: #111;
+      color: #f1f1f1;
     }
     #searchBtn {
       padding: 6px 20px;
       font-size: 1rem;
-      background: #2b7bff;
+      background: #1976d2;
       color: #fff;
       border: none;
       border-radius: 4px;
@@ -85,31 +95,33 @@
     }
     #resultsTable {
       margin-top: 20px;
-      border: 1px solid #ddd;
+      border: 1px solid #333;
       width: 100%;
-      background: #fff; 
-      color: #222;
-      box-shadow: 0 2px 8px rgba(60,70,100,0.04);
+      background: #222;
+      color: #f1f1f1;
       border-radius: 8px;
     }
     #resultsTable th, #resultsTable td {
       padding: 8px 12px;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #444;
       text-align: center;
     }
     #resultsTable th {
-      background: #3151ad;
+      background: #111;
       color: #fff;
       font-weight: bold;
     }
     #resultsTable tr:nth-child(even) {
-      background: #eaf0fa;
+      background: #1a1a1a;
     }
     #resultsTable tr:nth-child(odd) {
-      background: #ffffff;
+      background: #222;
     }
     #aRatioHeader {
       text-decoration: underline;
+    }
+    hr {
+      border: 1px solid #444;
     }
   </style>
 {% endblock %}
