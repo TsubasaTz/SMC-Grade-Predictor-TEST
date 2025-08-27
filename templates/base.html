@@ -7,17 +7,9 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+   <nav class="navbar">
 
-  <!-- 🔹 Main site navbar at the very top -->
-  <nav class="navbar main-nav">
-    <ul>
-      <li><a href="{{ url_for('home') }}" class="{% if request.path=='/' %}active{% endif %}">Home</a></li>
-      <li><a href="{{ url_for('about') }}" class="{% if request.path=='/about' %}active{% endif %}">About</a></li>
-      <li><a href="{{ url_for('contact') }}" class="{% if request.path=='/contact' %}active{% endif %}">Contact Us</a></li>
-    </ul>
-  </nav>
-
-  <!-- 🔹 Tool-specific navbar (underneath main one) -->
+>
   <nav class="navbar tool-nav">
     <ul>
       <li><a href="{{ url_for('prediction') }}" class="{% if request.path=='/prediction' %}active{% endif %}">SMC Prediction</a></li>
@@ -34,3 +26,4 @@
   <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 </html>
+
