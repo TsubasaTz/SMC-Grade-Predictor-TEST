@@ -1,34 +1,84 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
-<h2>Fall 2025 Classes Search</h2>
-<form method="post">
-    Class Name: <input name="class_name" placeholder="e.g. Math 2" value="{{ class_name }}">
-    <input type="submit" value="Search">
-</form>
-<hr>
-<div>
+  <h2>Fall 2025 Classes Search</h2>
+  <form method="post" class="search-form" style="margin-bottom:20px;">
+    <input type="text" name="class_name" id="courseInput" placeholder="예: MATH2" value="{{ class_name }}">
+    <button type="submit" id="searchBtn">Search</button>
+  </form>
+  <hr>
+  <div>
     {% if results %}
-        <table border="1">
-            <tr>
-                <th>Section</th><th>Title</th><th>Schedule</th>
-                <th>Modality</th><th>Campus</th><th>Location</th>
-                <th>Instructor</th><th>A Ratio (%)</th>
-            </tr>
-            {% for row in results %}
-            <tr>
-                <td>{{ row.section }}</td>
-                <td>{{ row.title }}</td>
-                <td>{{ row.schedule }}</td>
-                <td>{{ row.modality }}</td>
-                <td>{{ row.campus }}</td>
-                <td>{{ row.location }}</td>
-                <td>{{ row.instructor }}</td>
-                <td>{{ row.a_ratio }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+      <table id="resultsTable" class="results-table" style="width:100%; border-collapse:collapse;">
+        <thead>
+          <tr>
+            <th>Section</th>
+            <th>Title</th>
+            <th>Schedule</th>
+            <th>Modality</th>
+            <th>Campus</th>
+            <th>Location</th>
+            <th>Instructor</th>
+            <th>A Ratio (%)</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody">
+          {% for row in results %}
+          <tr>
+            <td>{{ row.section }}</td>
+            <td>{{ row.title }}</td>
+            <td>{{ row.schedule }}</td>
+            <td>{{ row.modality }}</td>
+            <td>{{ row.campus }}</td>
+            <td>{{ row.location }}</td>
+            <td>{{ row.instructor }}</td>
+            <td>{{ row.a_ratio }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     {% elif class_name %}
-        <p>No matching classes found.</p>
+      <p>No matching classes found.</p>
     {% endif %}
-</div>
+  </div>
+  <style>
+    .search-form {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    #courseInput {
+      padding: 6px 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 220px;
+    }
+    #searchBtn {
+      padding: 6px 20px;
+      font-size: 1rem;
+      background: #2b7bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #resultsTable {
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      width: 100%;
+    }
+    #resultsTable th, #resultsTable td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #eee;
+      text-align: center;
+    }
+    #resultsTable th {
+      background: #f8faff;
+      font-weight: bold;
+    }
+    #resultsTable tr:nth-child(even) {
+      background: #f5f7fa;
+    }
+  </style>
 {% endblock %}
