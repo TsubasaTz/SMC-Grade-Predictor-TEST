@@ -284,14 +284,23 @@ def fall_classes():
                 "instructor": row['Instructor'],
                 "a_ratio": a_ratio
             })
+
+ 
+
+ 
     return render_template("fall_classes.html", results=results, class_name=class_name)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
 
 @app.route('/')
 def home():
     return render_template('home.html')
+ 
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
 
 
 
