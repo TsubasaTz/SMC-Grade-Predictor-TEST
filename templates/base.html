@@ -47,13 +47,37 @@
 
 
 
-<footer class="site-footer">
-  <div class="container">
-    <p>&copy; {{2025}} Grade Predictor. All rights reserved.</p>
-    <p>
-      <a href="#">Privacy Policy</a> |
-      <a href="#">Contact</a>
-    </p>
+footer class="site-footer">
+  <div class="footer-container">
+    <!-- Branding -->
+    <div class="footer-brand">
+      <img src="{{ url_for('static', filename='smclogo.png') }}" alt="SMC Logo" class="footer-logo">
+      <p>SMC Grade Predictor — built by students, for students.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
+        <li><a href="{{ url_for('aboutproject') }}">About Project</a></li>
+        <li><a href="{{ url_for('otherlinks') }}">Other Links</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+
+    <!-- Resources -->
+    <div class="footer-resources">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="https://www.smc.edu" target="_blank">Santa Monica College</a></li>
+        <li><a href="https://assist.org" target="_blank">ASSIST Transfer</a></li>
+        <li><a href="https://canvas.smc.edu" target="_blank">Canvas</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; {{ 2025 }} SMC Grade Predictor. All rights reserved.</p>
   </div>
 </footer>
 
@@ -62,6 +86,7 @@
 
 
   </html>
+
 
 
 
