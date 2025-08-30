@@ -2,6 +2,53 @@
 {% extends "base.html" %}
 {% block content %}
 
+<!-- ==== HERO SECTION ==== -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Plan Your Semester Smarter 📊</h1>
+    <p>Use real SMC grade data to predict outcomes, analyze professors, and choose the best classes for you.</p>
+    <div class="hero-buttons">
+      <a href="{{ url_for('prediction') }}" class="btn-primary">Start Prediction</a>
+      <a href="{{ url_for('analyzer') }}" class="btn-secondary">Try Analyzer</a>
+    </div>
+  </div>
+</section>
 
+<!-- ==== FEATURES SECTION ==== -->
+<section class="features">
+  <h2>What You Can Do Here</h2>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h3>📈 Predict Grades</h3>
+      <p>Enter your course and professor to estimate your expected grade using past data.</p>
+      <a href="{{ url_for('prediction') }}" class="link-more">Learn More →</a>
+    </div>
+    <div class="feature-card">
+      <h3>👨‍🏫 Professor Analyzer</h3>
+      <p>Check grade distributions and ratios to find which professors align with your learning style.</p>
+      <a href="{{ url_for('analyzer') }}" class="link-more">Explore →</a>
+    </div>
+    <div class="feature-card">
+      <h3>🏫 Fall 2025 Classes</h3>
+      <p>Browse SMC’s latest course offerings and view instructor grade trends.</p>
+      <a href="{{ url_for('fall_classes') }}" class="link-more">See Classes →</a>
+    </div>
+    <div class="feature-card">
+      <h3>🔗 Resources</h3>
+      <p>Access helpful student links for transfer, study, and academic planning.</p>
+      <a href="{{ url_for('otherlinks') }}" class="link-more">Resources →</a>
+    </div>
+  </div>
+</section>
 
-<h1>Home page</h1>
+<!-- ==== ABOUT PROJECT SECTION ==== -->
+<section class="about-project">
+  <h2>Why This Matters</h2>
+  <p>
+    Choosing the right professor and class can make a big difference in your semester. 
+    This tool is built by students, for students, to make smarter academic choices backed by real data.
+  </p>
+  <a href="{{ url_for('aboutproject') }}" class="btn-secondary">About the Project</a>
+</section>
+
+{% endblock %}
