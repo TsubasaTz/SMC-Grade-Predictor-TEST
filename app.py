@@ -45,9 +45,9 @@ def plot_to_img(fig):
     plt.close(fig)
     return img_str
 
-#@app.route('/')
-#def index():
-   # return redirect(url_for('prediction'))
+@app.route('/')
+def index():
+   return redirect(url_for('prediction'))
 
 
 @app.route("/predict", methods=["GET", "POST"])
@@ -313,6 +313,7 @@ def otherlinks():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
