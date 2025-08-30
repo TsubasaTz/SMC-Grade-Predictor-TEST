@@ -45,9 +45,9 @@ def plot_to_img(fig):
     plt.close(fig)
     return img_str
 
-@app.route('/')
-def index():
-    return redirect(url_for('prediction'))
+#@app.route('/')
+#def index():
+   # return redirect(url_for('prediction'))
 
 
 @app.route("/predict", methods=["GET", "POST"])
@@ -295,10 +295,25 @@ def fall_classes():
 @app.route('/')
 def home():
     return render_template('home.html')
- 
+
+
+
+# Footer links 
+@app.route('/aboutus')
+def aboutus():
+    return render_template('aboutus.html')
+
+@app.route('/aboutproject')
+def aboutproject():
+    return render_template('aboutproject.html')
+
+@app.route('/otherlinks')
+def otherlinks():
+    return render_template('otherlinks.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 
