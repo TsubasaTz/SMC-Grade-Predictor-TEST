@@ -233,19 +233,6 @@ def prediction():
                 f"Predicted Grade: {predicted} (GPA: {avg_grade_point:.2f})\n"
             )
 
-            # Only generate a plot for the last valid course
-            labels = ['A', 'B', 'C', 'D', 'F']
-            counts = [subset[g].sum() for g in labels]
-
-            fig, ax = plt.subplots(figsize=(6, 4))
-            bars = ax.bar(labels, counts, color='dodgerblue')
-            ax.set_title(f'Grade Distribution for {professor} in {course}')
-            ax.set_ylabel('Number of Students')
-            for bar, count in zip(bars, counts):
-                ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() - 1,
-                        str(count), ha='center', color='white', fontsize=12)
-            img = plot_to_img(fig)
-
         # ---- Train simple LinearRegression from this student's entries and predict planned course/prof ----
         if planned_course and planned_prof and len(student_history) > 0:  
             # student ability from this session’s history
@@ -287,7 +274,7 @@ def prediction():
         f"Based on your history, your predicted grade for {planned_course} with {planned_prof} is:\n"
         f"➤ Letter Grade: {grade_to_letter(float(gpa_pred))}"
     )
-    return render_template("prediction.html", prediction=final_output, plot_img=img)
+    return render_template("prediction.html", prediction=final_output)
 
 @app.route("/new_student_prediction")
 def new_student_prediction():
