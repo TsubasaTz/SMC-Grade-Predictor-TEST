@@ -5,13 +5,16 @@ matplotlib.use('Agg')  # Use non-GUI backend
 import matplotlib.pyplot as plt
 import io
 import base64
+import numpy as np  # Numerical operations library for math
+from sklearn.linear_model import LinearRegression  # Linear Regression model from Scikit-Learn
+import joblib 
+import os    
 
 app = Flask(__name__)
 
-# Load and clean data once when app starts
-# testing with sample  
-
-
+# ------------------------------
+# Load and clean data at startup
+# ------------------------------
 df = pd.read_csv('SMC_Data.csv', skipinitialspace=True)
 
 # Remove completely empty columns that come from trailing commas
@@ -22,7 +25,7 @@ df.replace('\xa0', pd.NA, regex=True, inplace=True)
 
 grade_cols = ["A", "B", "C", "D", "F", "P", "NP", "IX", "EW", "W"]
 for col in grade_cols:
- df[col] = (
+    df[col] = (
         df[col]
         .astype(str)
         .str.strip()
@@ -35,6 +38,105 @@ df["Professor"] = df["INSTRUCTOR"].apply(lambda x: str(x).strip().split()[0].tit
 df["C"] += df["P"]
 df["F"] += df["NP"] + df["IX"]
 df["W"] += df["EW"]
+
+# ---------- ML HELPERS (from prediction.py) ----------
+def load_backend_data(path):  
+    d = pd.read_csv(path)
+    d = d.loc[:, ~d.columns.str.contains('^Unnamed')]
+    grade_cols_full = ['A','B','C','D','F','P','NP','IX','EW','W','TOTAL']
+    for c in grade_cols_full:
+        if c in d.columns:
+            d[c] = pd.to_numeric(d[c], errors='coerce').fillna(0)
+    return d
+
+def calculate_course_specific_ids(d): 
+    # Mean GPA from letter counts
+    denom = (d['A'] + d['B'] + d['C'] + d['D'] + d['F']).replace(0, np.nan)
+    d['MeanGPA'] = (
+        4 * d['A'] + 3 * d['B'] + 2 * d['C'] + 1 * d['D'] + 0 * d['F']
+    ) / denom
+    d['MeanGPA'] = d['MeanGPA'].fillna(0)  # if denom was 0
+    d['Xp'] = 4.0 - d['MeanGPA']
+    difficulty_stats = d.groupby(['INSTRUCTOR', 'CLASS'])['Xp'].mean()
+    mu = difficulty_stats.mean()
+    sigma = difficulty_stats.std(ddof=0) if difficulty_stats.std(ddof=0) != 0 else 1.0
+    z_scores = (difficulty_stats - mu) / sigma
+    sigmoid = lambda x: 1 / (1 + np.exp(-x))
+    ids = sigmoid(z_scores)
+    return ids  # Series indexed by (INSTRUCTOR, CLASS)
+
+def calculate_student_ability(student_history): 
+    if not student_history:
+        return 2.0
+    grades = [g for (_, _, g) in student_history]
+    return sum(grades) / len(grades)
+
+def build_training_data(student_history, prof_ids):
+    rows = []
+    for course, prof, grade in student_history:
+        difficulty = prof_ids.get((prof, course), 0.5)
+        rows.append({
+            'COURSE': course,
+            'INSTRUCTOR': prof,
+            'PROF_DIFFICULTY': difficulty,
+            'GRADE': grade
+        })
+    df_student = pd.DataFrame(rows) if rows else pd.DataFrame(columns=['COURSE','INSTRUCTOR','PROF_DIFFICULTY','GRADE'])
+    df_encoded = pd.get_dummies(df_student, columns=['COURSE', 'INSTRUCTOR'])
+    X = df_encoded.drop('GRADE', axis=1) if 'GRADE' in df_encoded.columns else pd.DataFrame()
+    y = df_encoded['GRADE'] if 'GRADE' in df_encoded.columns else pd.Series(dtype=float)
+    return X, y, df_encoded.columns.drop('GRADE') if 'GRADE' in df_encoded.columns else pd.Index([])
+
+def predict_future_grade(model, feature_columns, planned_course, planned_prof, prof_ids, student_ability): 
+    if len(feature_columns) == 0:
+        return 2.0  # safe default if nothing to train on
+    input_row = pd.DataFrame([np.zeros(len(feature_columns))], columns=feature_columns)
+    difficulty = prof_ids.get((planned_prof, planned_course), 0.5)
+    if 'PROF_DIFFICULTY' in input_row.columns:
+        input_row['PROF_DIFFICULTY'] = difficulty
+    course_col = f'COURSE_{planned_course}'
+    prof_col = f'INSTRUCTOR_{planned_prof}'
+    if course_col in input_row.columns:
+        input_row[course_col] = 1
+    if prof_col in input_row.columns:
+        input_row[prof_col] = 1
+    if 'STUDENT_ABILITY' in input_row.columns:
+        input_row['STUDENT_ABILITY'] = student_ability
+    else:
+        # Blend if the column isn’t present
+        if 'PROF_DIFFICULTY' in input_row.columns:
+            input_row['PROF_DIFFICULTY'] = (difficulty + student_ability / 4) / 2
+    pred = model.predict(input_row)[0]
+    return float(np.round(pred, 2))
+
+def grade_to_letter(g):  
+    return (
+        'A' if g >= 3.75 else
+        'B' if g >= 2.75 else
+        'C' if g >= 1.75 else
+        'D' if g >= 0.75 else 'F'
+    )
+
+def save_student_input(student_history): 
+    student_file = "StudentAbility.csv"
+    if not os.path.exists(student_file):
+        pd.DataFrame(columns=["COURSE","INSTRUCTOR","GRADE"]).to_csv(student_file, index=False)
+    student_df = pd.read_csv(student_file)
+    if len(student_history) > 0:
+        add_df = pd.DataFrame(student_history, columns=["COURSE","INSTRUCTOR","GRADE"])
+        student_df = pd.concat([student_df, add_df], ignore_index=True)
+        student_df.to_csv(student_file, index=False)
+
+def load_all_student_data(): 
+    student_file = "StudentAbility.csv"
+    if not os.path.exists(student_file):
+        return []
+    s = pd.read_csv(student_file)
+    return [(row['COURSE'], row['INSTRUCTOR'], row['GRADE']) for _, row in s.iterrows()]
+
+# Precompute prof difficulty once at startup (for prediction)  
+backend_df_full = load_backend_data('SMC_Data.csv') 
+prof_ids_map = calculate_course_specific_ids(backend_df_full)  
 
 # Helper to create matplotlib plots as base64 img strings
 def plot_to_img(fig):
@@ -49,21 +151,53 @@ def plot_to_img(fig):
 def index():
    return redirect(url_for('prediction'))
 
-
 @app.route("/predict", methods=["GET", "POST"])
 def prediction():
     prediction_result = ""
+    personalized_result = "" 
     img = None
 
     if request.method == "POST":
+        # ---- existing aggregate prediction ----
         courses = request.form.getlist("course_name[]")
         instructors = request.form.getlist("instructor_name[]")
         grades = request.form.getlist("grade[]")
 
+        # ---- Planned course/prof for ML prediction ----
+        planned_course = request.form.get("predict_course", "").strip()  
+        planned_prof = request.form.get("predict_prof", "").strip()      
+
+        # Build the student_history for ML & save it
+        student_history = []  
+        for course, instructor, grade in zip(courses, instructors, grades):
+            course = course.strip().upper()
+            professor_last = instructor.strip().upper()
+            # Map entered letter grade to numeric; accept A/B/C/D/F (fallback to C if malformed)
+            letter = str(grade).strip().upper()
+            if letter not in ['A','B','C','D','F']:
+                # Try numeric fallback
+                try:
+                    val = float(letter)
+                    # clamp 0-4 and round to nearest integer-grade bucket
+                    val = max(0.0, min(4.0, val))
+                    # map roughly: 3.5+ A, 2.5+ B, 1.5+ C, 0.5+ D else F
+                    if val >= 3.5: letter = 'A'
+                    elif val >= 2.5: letter = 'B'
+                    elif val >= 1.5: letter = 'C'
+                    elif val >= 0.5: letter = 'D'
+                    else: letter = 'F'
+                except:
+                    letter = 'C'
+            numeric_grade = {'A':4,'B':3,'C':2,'D':1,'F':0}[letter]
+            student_history.append((course, professor_last, numeric_grade)) 
+
+        # ---- Save student input to StudentAbility.csv (for persistence) ----
+        save_student_input(student_history) 
+
+        # ---- Existing per-course professor-based baseline result ----
         for course, instructor, grade in zip(courses, instructors, grades):
             course = course.strip()
             professor = instructor.strip().title()
-
             subset = df[(df['Professor'] == professor) & (df['CLASS'] == course)]
             if subset.empty:
                 prediction_result += f"\nCourse: {course} | Professor: {professor} → No data found.\n"
@@ -112,8 +246,43 @@ def prediction():
                         str(count), ha='center', color='white', fontsize=12)
             img = plot_to_img(fig)
 
-    return render_template("prediction.html", prediction=prediction_result.strip(), plot_img=img)
+        # ---- Train simple LinearRegression from this student's entries and predict planned course/prof ----
+        if planned_course and planned_prof and len(student_history) > 0:  
+            # student ability from this session’s history
+            student_ability = calculate_student_ability(student_history)  
+            # features for training
+            X_train, y_train, _ = build_training_data(student_history, prof_ids_map)  
 
+            if X_train is not None and not X_train.empty:
+                # Add student ability as a feature
+                X_train['STUDENT_ABILITY'] = student_ability  
+
+                # Train and save
+                model = LinearRegression()                    
+                model.fit(X_train, y_train)                   
+                joblib.dump(model, "student_model.pkl")       
+
+                # Predict
+                feature_cols = X_train.columns                
+                planned_course_up = planned_course.upper()    
+                planned_prof_up = planned_prof.upper()        
+                gpa_pred = predict_future_grade(
+                    model, feature_cols,
+                    planned_course_up, planned_prof_up,
+                    prof_ids_map, student_ability
+                )                                             
+                personalized_result = (
+                    f"\nPersonalized ML prediction for {planned_course.strip()} with {planned_prof.strip()}:\n"
+                    f"→ Predicted GPA: {gpa_pred:.2f} | Letter: {grade_to_letter(gpa_pred)}"
+                )                                             
+            else:
+                personalized_result = (
+                    "\nNot enough structured training data from your entries to train an ML model yet."
+                )                                             
+
+    # Combine baseline + ML result (ML result appended if present)  
+    combo = (prediction_result.strip() + ("\n" + personalized_result if personalized_result else "")).strip()  
+    return render_template("prediction.html", prediction=combo, plot_img=img)
 
 @app.route("/new_student_prediction")
 def new_student_prediction():
@@ -139,7 +308,7 @@ def new_student_prediction():
         return render_template(
             "new_student_prediction.html",
             best_profs=best_by_course,
-            graph=graph_path  # ✅ Added back
+            graph=graph_path
         )
     except Exception as e:
         print("Error in new_student_prediction:", e)
@@ -284,19 +453,11 @@ def fall_classes():
                 "instructor": row['Instructor'],
                 "a_ratio": a_ratio
             })
-
- 
-
- 
     return render_template("fall_classes.html", results=results, class_name=class_name)
-
-
 
 @app.route('/home')
 def home():
     return render_template('home.html')
-
-
 
 # Footer links 
 @app.route('/aboutus')
@@ -313,12 +474,3 @@ def otherlinks():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
-
-
-
-
-
