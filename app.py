@@ -281,8 +281,13 @@ def prediction():
                 )                                             
 
     # Combine baseline + ML result (ML result appended if present)  
-    combo = (prediction_result.strip() + ("\n" + personalized_result if personalized_result else "")).strip()  
-    return render_template("prediction.html", prediction=combo, plot_img=img)
+    final_output = ""
+    if personalized_result:
+        final_output = (
+        f"Based on your history, your predicted grade for {planned_course} with {planned_prof} is:\n"
+        f"➤ Letter Grade: {grade_to_letter(float(gpa_pred))}"
+    )
+    return render_template("prediction.html", prediction=final_output, plot_img=img)
 
 @app.route("/new_student_prediction")
 def new_student_prediction():
