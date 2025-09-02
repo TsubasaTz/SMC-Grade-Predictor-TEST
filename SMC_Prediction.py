@@ -1,6 +1,8 @@
 import numpy as np # Numerical operations library for math 
 import pandas as pd # Data handling library for CSV and tables 
 from sklearn.linear_model import LinearRegression # Linear Regression model from Scikit-Learn
+import joblib
+import os
 
 # ----------------------------------
 # Step 1: Load & Clean Backend Data
@@ -123,6 +125,33 @@ def grade_to_letter(g):
         'C' if g >= 1.75 else
         'D' if g >= 0.75 else 'F'
     )
+# ------------------------------
+# NEW: Save student input to CSV
+# ------------------------------
+def save_student_input(student_history):
+    student_file = "StudentAbility.csv"
+    # If file doesn't exist, create it with columns
+    if not os.path.exists(student_file):
+        pd.DataFrame(columns=["COURSE","INSTRUCTOR","GRADE"]).to_csv(student_file, index=False)
+    # Append new entries
+    student_df = pd.read_csv(student_file)
+    for course, prof, grade in student_history:
+        student_df = pd.concat([student_df, pd.DataFrame([{
+            "COURSE": course,
+            "INSTRUCTOR": prof,
+            "GRADE": grade
+        }])], ignore_index=True)
+    student_df.to_csv(student_file, index=False)
+# ----------------------------------
+# Step 8: Load All Student Data
+# ----------------------------------
+def load_all_student_data():
+    student_file = "StudentAbility.csv"
+    if not os.path.exists(student_file):
+        return []  # No history yet
+    df = pd.read_csv(student_file)
+    student_history = [(row['COURSE'], row['INSTRUCTOR'], row['GRADE']) for _, row in df.iterrows()]
+    return student_history
 
 # -------------------------------
 # MAIN SCRIPT
@@ -133,6 +162,8 @@ if __name__ == "__main__":
     prof_ids = calculate_course_specific_ids(backend_df) # Compute course-specific professor difficulty (IDS | Instructor Difficulty Score)
 
     print("---- Student Input ----")
+    all_student_history = load_all_student_data()
+
     student_history = [] # Initialize student history list 
     num_entries = int(input("Number of past courses to enter: ")) # How many past courses to input? 
 
@@ -152,6 +183,11 @@ if __name__ == "__main__":
         # Add the course data tuple to student history list 
         student_history.append((course, prof, numeric_grade))
 
+    # Save student input to StudentAbility.csv
+    save_student_input(student_history)
+
+    full_student_history = all_student_history + student_history
+
     # Calculate student ability score (SAS) as average numeric grade (GPA) from history 
     student_ability = calculate_student_ability(student_history)
 
@@ -170,6 +206,7 @@ if __name__ == "__main__":
     # Create and train the linear regression model on the training data 
     model = LinearRegression()
     model.fit(X_train, y_train)
+    joblib.dump(model, "student_model.pkl")
 
     # Predict the future grade for planned ccourse & professor using the model 
     predicted_grade = predict_future_grade(model, feature_cols, planned_course, planned_prof, prof_ids, student_ability)
