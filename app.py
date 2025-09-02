@@ -233,26 +233,18 @@ def prediction():
                 f"Predicted Grade: {predicted} (GPA: {avg_grade_point:.2f})\n"
             )
 
-        # Generate plot for the planned course/professor (prediction)
-        if planned_course and planned_prof:
-            planned_course_up = planned_course.strip().upper()
-            planned_prof_up = planned_prof.strip().title()
+            # Only generate a plot for the last valid course
+            labels = ['A', 'B', 'C', 'D', 'F']
+            counts = [subset[g].sum() for g in labels]
 
-            subset = df[(df['Professor'] == planned_prof_up) & (df['CLASS'] == planned_course_up)]
-        if not subset.empty:
-         labels = ['A', 'B', 'C', 'D', 'F']
-         counts = [subset[g].sum() for g in labels]
-
-        fig, ax = plt.subplots(figsize=(6, 4))
-        bars = ax.bar(labels, counts, color='dodgerblue')
-        ax.set_title(f'Grade Distribution for {planned_prof_up} in {planned_course_up}')
-        ax.set_ylabel('Number of Students')
-        for bar, count in zip(bars, counts):
-            ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() - 1,
-                    str(count), ha='center', color='white', fontsize=12)
-        img = plot_to_img(fig)
-    else:
-        img = None  # No data found, no plot
+            fig, ax = plt.subplots(figsize=(6, 4))
+            bars = ax.bar(labels, counts, color='dodgerblue')
+            ax.set_title(f'Grade Distribution for {professor} in {course}')
+            ax.set_ylabel('Number of Students')
+            for bar, count in zip(bars, counts):
+                ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() - 1,
+                        str(count), ha='center', color='white', fontsize=12)
+            img = plot_to_img(fig)
 
         # ---- Train simple LinearRegression from this student's entries and predict planned course/prof ----
         if planned_course and planned_prof and len(student_history) > 0:  
@@ -487,4 +479,3 @@ def otherlinks():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
